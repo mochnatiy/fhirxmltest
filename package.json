@@ -1,0 +1,19 @@
+{
+  "name": "fhirjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "SA",
+  "license": "ISC",
+  "dependencies": {
+    "fhir": "^4.11.1",
+    "node": "^19.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "typescript": "^4.9.4"
+  }
+}
