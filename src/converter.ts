@@ -1,17 +1,16 @@
 import { loadBundleJSON } from "./resources/eaubundle"
+import { loadEauStornoBundleJSON } from "./resources/eauStornoBundle"
 import { Fhir, ValidationMessage } from 'fhir'
 
-const convertFHIRBundle = (): String => {
+export const serializeEauBundle = (): String => {
   const eauBundleJSON = loadBundleJSON()
 
   const fhir = new Fhir()
   const eauBundleXML = fhir.objToXml(eauBundleJSON)
 
-  console.log({ eauBundleXML })
+  const eauValidationResult = fhir.validate(eauBundleXML, { errorOnUnexpected: true })
 
-  const validationResult = fhir.validate(eauBundleXML, { errorOnUnexpected: true })
-
-  validationResult.messages.map((validationMessage: ValidationMessage): void => {
+  eauValidationResult.messages.map((validationMessage: ValidationMessage): void => {
     console.log({
       location: validationMessage.location,
       severity: validationMessage.severity,
@@ -20,11 +19,33 @@ const convertFHIRBundle = (): String => {
     })
   })
 
-  if (!validationResult.valid) {
-    throw new Error('XML is not valid')
+  if (!eauValidationResult.valid) {
+    throw new Error('FHIR.js EAU XML is not valid')
   }
 
   return eauBundleXML.toString()
 }
 
-export default convertFHIRBundle
+export const serializeEauStornoBundle = (): String => {
+  const eauStornoBundleJSON = loadEauStornoBundleJSON()
+
+  const fhir = new Fhir()
+
+  const eauStornoBundleXml = fhir.objToXml(eauStornoBundleJSON)
+  const eauStornoValidationResult = fhir.validate(eauStornoBundleJSON, { errorOnUnexpected: true })
+
+  eauStornoValidationResult.messages.map((validationMessage: ValidationMessage): void => {
+    console.log({
+      location: validationMessage.location,
+      severity: validationMessage.severity,
+      resourceId: validationMessage.resourceId,
+      message: validationMessage.message
+    })
+  })
+
+  if (!eauStornoValidationResult.valid) {
+    throw new Error('FHIR.js EAU Storno XML is not valid')
+  }
+
+  return eauStornoBundleXml.toString()
+}
