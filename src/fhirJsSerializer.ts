@@ -1,16 +1,18 @@
-import { loadBundleJSON } from "./resources/eaubundle"
+import { loadEauBundleJSON } from "./resources/eaubundle"
 import { loadEauStornoBundleJSON } from "./resources/eauStornoBundle"
-import { Fhir, ValidationMessage } from 'fhir'
+import { Fhir } from 'fhir'
+import { ValidatorMessage } from "fhir/validator"
 
 export const serializeEauBundle = (): String => {
-  const eauBundleJSON = loadBundleJSON()
+  const eauBundleJSON = loadEauBundleJSON()
 
   const fhir = new Fhir()
   const eauBundleXML = fhir.objToXml(eauBundleJSON)
 
   const eauValidationResult = fhir.validate(eauBundleXML, { errorOnUnexpected: true })
 
-  eauValidationResult.messages.map((validationMessage: ValidationMessage): void => {
+  console.log("Validation of eAU Bundle")
+  eauValidationResult.messages.map((validationMessage: ValidatorMessage): void => {
     console.log({
       location: validationMessage.location,
       severity: validationMessage.severity,
@@ -34,7 +36,8 @@ export const serializeEauStornoBundle = (): String => {
   const eauStornoBundleXml = fhir.objToXml(eauStornoBundleJSON)
   const eauStornoValidationResult = fhir.validate(eauStornoBundleJSON, { errorOnUnexpected: true })
 
-  eauStornoValidationResult.messages.map((validationMessage: ValidationMessage): void => {
+  console.log("Validation of eAU Storno Bundle")
+  eauStornoValidationResult.messages.map((validationMessage: ValidatorMessage): void => {
     console.log({
       location: validationMessage.location,
       severity: validationMessage.severity,
