@@ -1,10 +1,10 @@
 import { loadEauStornoBundleJSON } from "./resources/eauStornoBundle"
-import * as jsToXmpParser from 'js2xmlparser'
+import { toXML } from 'jstoxml'
 
 export const serializeEauStornoBundle = (): String => {
   const eauStornoBundleJSON = loadEauStornoBundleJSON()
 
-  const eauXmlContent = jsToXmpParser.parse('Bundle', eauStornoBundleJSON)
+  const eauXmlContent = toXML(eauStornoBundleJSON)
 
   return eauXmlContent.toString()
 }
