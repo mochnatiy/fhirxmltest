@@ -1,6 +1,6 @@
 import { loadEauBundleJSON } from "./resources/eaubundle"
 import { loadEauStornoBundleJSON } from "./resources/eauStornoBundle"
-import { Fhir } from 'fhir'
+import { Fhir } from 'fhir/fhir'
 import { ValidatorMessage } from "fhir/validator"
 
 export const serializeEauBundle = (): String => {
